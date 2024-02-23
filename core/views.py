@@ -6,7 +6,7 @@ from .models import Profile, Post, LikePost, FollowersCount
 from itertools import chain
 import random
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def index(request):
     user_object = request.user
     user_profile = Profile.objects.get(pet=user_object)
@@ -26,7 +26,7 @@ def index(request):
 
     return render(request, 'index.html', {'user_profile': user_profile, 'posts': feed, 'suggestions_username_profile_list': suggestions_username_profile_list})
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def upload(request):
     if request.method == 'POST':
         user = request.user.username
@@ -40,7 +40,7 @@ def upload(request):
     else:
         return redirect('index')
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def search(request):
     user_profile = Profile.objects.get(pet=request.user)
 
@@ -51,7 +51,7 @@ def search(request):
 
     return render(request, 'search.html', {'user_profile': user_profile, 'username_profile_list': username_profile_list})
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def like_post(request):
     username = request.user.username
     post_id = request.GET.get('post_id')
@@ -72,7 +72,7 @@ def like_post(request):
 
     return redirect('index')
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def profile(request, pk):
     user_object = User.objects.get(username=pk)
     user_profile = Profile.objects.get(pet=user_object)
@@ -101,7 +101,7 @@ def profile(request, pk):
     }
     return render(request, 'profile.html', context)
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def follow(request):
     if request.method == 'POST':
         follower = request.user.username
@@ -116,7 +116,7 @@ def follow(request):
 
     return redirect('profile', pk=user)
 
-@login_required(login_url='signin_next')
+@login_required(login_url='signin')
 def settings(request):
     user_profile = Profile.objects.get(pet=request.user)
 
@@ -177,7 +177,7 @@ def signin(request):
             messages.info(request, 'Credentials Invalid')
             return redirect('signin')
 
-    return redirect('core:signin_next')
+    return render(request, 'signin.html')
 
 @login_required(login_url='signin')
 def logout_view(request):
